@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "description": "A web based chat app",
     "dependencies": {
+        "cookie-parser": "^1.4.4",
         "socket.io": "^2.3.0"
     }
 }
