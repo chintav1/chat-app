@@ -33,7 +33,7 @@ io.on("connection", function(socket) {
         var msg_detail = new Object();
         var now = new Date(Date.now())
         msg_detail.date = now.toLocaleString();
-        if(msg.startsWith('/nick')) {
+        if(msg.startsWith('/nick ')) {
             var new_nickname = msg.split(" ")[1];
             if (!online.includes(new_nickname)) {
                 var index = online.indexOf(nickname);
