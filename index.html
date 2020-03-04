@@ -95,6 +95,10 @@
                         $("#messages").append("<li class='" + nickname + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
                     }
                     $("#messages li." + nickname + " span").css({'color': color});
+                    if (socket.id === id) {
+                        $("#messages li." + nickname).css({'font-weight': 'bold'})
+                    }
+                    
                 })
                 socket.on("nick_error", function() {
                     alert("Sorry, this nickname is already taken")
