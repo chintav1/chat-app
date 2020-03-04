@@ -60,7 +60,6 @@
         <script>
             $(function() {
                 var socket = io();
-
                 $('form').submit(function (e) {
                     e.preventDefault();
                     socket.emit("chat message", $("#msg").val());
@@ -106,11 +105,12 @@
                     }
 
                     else {
-                        $("#messages").append("<li class='" + nickname + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
+                        $("#messages").append("<li class='" + id + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
                     }
-                    $("#messages li." + nickname + " span").css({'color': color});
+
+                    $("#messages li." + id + " span").css({'color': color});
                     if (socket.id === id) {
-                        $("#messages li." + nickname).css({'font-weight': 'bold'})
+                        $("#messages li." + id).css({'font-weight': 'bold'})
                     }
                     
                 })
