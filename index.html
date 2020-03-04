@@ -82,13 +82,27 @@
                     var msg = msg_details[2];
                     var id = msg_details[3];
                     var color = msg_details[4];
-                    var color_change;
-                    if (msg.startsWith('/nick ')) {
-                        alert("You are now " + nickname);
-                    }
 
-                    else if (msg.startsWith('/nickcolor ')) {
-                        alert("Changing color to " + color);
+                    if (msg.startsWith('/')) {
+                        var cmd = msg.split(' ')[0];
+                        if (cmd === '/nickcolor') {
+                            if (socket.id == id) {
+                                alert("Changing color to " + color);
+                            }
+                            
+                        }
+                        else if (cmd === '/nick') {
+                            if (socket.id == id) {
+                                alert("You are now " + nickname);
+                            }    
+                        }
+                        else {
+                            if (socket.id == id) {
+                                alert("INFO:Messages starting with a \'/\' are reserved for special commands (nickname/color)" + 
+                                "\nERROR: This is an invalid command!")
+                            }
+                            
+                        }
                     }
 
                     else {

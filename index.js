@@ -42,30 +42,35 @@ io.on("connection", function(socket) {
         var now = new Date(Date.now());
         var id = socket.id;
         msg_detail.date = now.toLocaleString();
-        if(msg.startsWith('/nick ')) {
-            var new_nickname = msg.split(" ")[1];
-            if (!online.includes(new_nickname)) {
-                var index = online.indexOf(nickname);
-                nickname = new_nickname;
-                online[index] = nickname;   
-                io.emit("users", online);
+        if (msg.startsWith('/')) {
+            var cmd = msg.split(' ')[0];
+            if(cmd === '/nick') {
+                var new_nickname = msg.split(" ")[1];
+                if (!online.includes(new_nickname)) {
+                    var index = online.indexOf(nickname);
+                    nickname = new_nickname;
+                    online[index] = nickname;   
+                    io.emit("users", online);
+                }
+                else {
+                    socket.emit("nick_error");
+                }
             }
-            else {
-                socket.emit("nick_error");
+            else if (cmd === '/nickcolor') {
+                hex = msg.split(' ')[1];
+                var color_array = hex.match(/.{1,2}/g);
+                red = color_array[0];
+                green = color_array[1];
+                blue = color_array[2];
+                color = color.concat("#", red, green, blue);
             }
         }
-        if (msg.startsWith('/nickcolor ')) {
-            hex = msg.split(' ')[1];
-            var color_array = hex.match(/.{1,2}/g);
-            red = color_array[0];
-            green = color_array[1];
-            blue = color_array[2];
-            color = color.concat("#", red, green, blue);
-        }
+
+
 
         msg_detail.nick = nickname;
         msg_detail.message = msg;
-        msg_detail.id = socket.id;
+        msg_detail.id = id;
         msg_detail.color = color;
         messages.push(msg_detail);
         console.log(messages);
