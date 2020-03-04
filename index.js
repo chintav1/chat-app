@@ -1,10 +1,11 @@
 var app = require('express')();
 var http = require('http').createServer(app);
-var io = require("socket.io")(http);
+var io = require("socket.io")(http, {pingTimout: 3600000000000000000000 });
 
 var online = new Array();
 var user = "User";
 var id = 1;
+var messages = new Array();
 
 app.get('/', function(req, res) {
     console.log("Sending file..");
@@ -16,6 +17,12 @@ app.get('/', function(req, res) {
 
 io.on("connection", function(socket) {
     var nickname = user + id;
+    var color = '';
+    var hex;
+    var red = 0;
+    var green = 0;
+    var blue = 0;
+
     console.log("A user has connected: " + nickname);
     id+=1;
     online.push(nickname);
@@ -30,8 +37,10 @@ io.on("connection", function(socket) {
     })
     socket.on("chat message", function(msg) {
         console.log("message: " + msg);
+        
         var msg_detail = new Object();
-        var now = new Date(Date.now())
+        var now = new Date(Date.now());
+        var id = socket.id;
         msg_detail.date = now.toLocaleString();
         if(msg.startsWith('/nick ')) {
             var new_nickname = msg.split(" ")[1];
@@ -45,9 +54,21 @@ io.on("connection", function(socket) {
                 socket.emit("nick_error");
             }
         }
+        if (msg.startsWith('/nickcolor ')) {
+            hex = msg.split(' ')[1];
+            var color_array = hex.match(/.{1,2}/g);
+            red = color_array[0];
+            green = color_array[1];
+            blue = color_array[2];
+            color = color.concat("#", red, green, blue);
+        }
+
         msg_detail.nick = nickname;
         msg_detail.message = msg;
-        console.log(msg_detail);
+        msg_detail.id = socket.id;
+        msg_detail.color = color;
+        messages.push(msg_detail);
+        console.log(messages);
         io.emit('chat message',  msg_detail);
 
     })

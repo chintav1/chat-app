@@ -49,9 +49,7 @@
                 background: #eee; 
             }
 
-            #messages li:last-child {
-                font-weight: bold;
-            }
+
 
 
         </style>
@@ -82,23 +80,21 @@
                     var date = msg_details[0];
                     var nickname = msg_details[1];
                     var msg = msg_details[2];
+                    var id = msg_details[3];
+                    var color = msg_details[4];
+                    var color_change;
                     if (msg.startsWith('/nick ')) {
                         alert("You are now " + nickname);
                     }
 
                     else if (msg.startsWith('/nickcolor ')) {
-                        var color = msg.split(' ')[1];
-                        var color_array = color.match(/.{1,2}/g);
-                        var red = color_array[0];
-                        var green = color_array[1];
-                        var blue = color_array[2];
+                        alert("Changing color to " + color);
                     }
 
                     else {
-                        $("#messages").append($("<li>").text(date +"\xa0\xa0" + nickname +  ":\xa0" + msg))
+                        $("#messages").append("<li class='" + nickname + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
                     }
-                    
-
+                    $("#messages li." + nickname + " span").css({'color': color});
                 })
                 socket.on("nick_error", function() {
                     alert("Sorry, this nickname is already taken")
