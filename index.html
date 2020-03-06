@@ -26,31 +26,27 @@
                 list-style-type: none; 
                 margin: 0; 
                 padding: 0;
-                
-                
+                vertical-align: bottom;  
             }
+
+
 
             div.jumbotron {
                 padding-bottom: 0%;
                 padding-top: 0%;
                 padding-right: 0%;
-                height: 100vh;
+                height: 90vh;
             }
 
             #online {
                 list-style-type: square;
                 color: blue;
             }
-            #messages li { 
-                padding: 5px 10px;
-                width: 105%;
-            }
+
+
             #messages li:nth-child(odd) { 
                 background: #eee; 
             }
-
-
-
 
         </style>
     </head>
@@ -63,7 +59,7 @@
                 $('form').submit(function (e) {
                     e.preventDefault();
                     socket.emit("chat message", $("#msg").val());
-                    $("#msg").val("");
+                    $("#msg").val(""); 
                     return false;
                 })
 
@@ -105,13 +101,15 @@
                     }
 
                     else {
-                        $("#messages").append("<li class='" + id + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
+                    
+                        $("#messages").append("<li class='list-group-item' id='" + id + "'>" + date + "\xa0\xa0" + "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>");
                     }
 
-                    $("#messages li." + id + " span").css({'color': color});
+                    $("#messages li#" + id + " span").css({'color': color});
                     if (socket.id === id) {
-                        $("#messages li." + id).css({'font-weight': 'bold'})
+                        $("#messages li#" + id).css({'font-weight': 'bold'})
                     }
+                    $("#message_list").scrollTop($("#message_list").height());
                     
                 })
                 socket.on("nick_error", function() {
@@ -123,8 +121,10 @@
         </script>
 
         <div class="row">
-            <div class="col-md-10">
-                <ul id="messages"></ul>
+            <div id="main_div" class="col-md-10">
+                <div id="message_list" style='max-height: 90vh; overflow-y: scroll;'>
+                    <ul class='list-group' id="messages"></ul>
+                </div>
                 <form action="">
                     <input id="msg" autocomplete="off"/>
                     <button type="button" class="btn btn-primary" onclick="">Send</button>
