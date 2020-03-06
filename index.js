@@ -63,7 +63,8 @@ io.on("connection", function(socket) {
             }
             else if (cmd === '/nickcolor') {
                 hex = msg.split(' ')[1];
-                var color_array = hex.match(/.{1,2}/g);
+                color = '';                             //clear previous color
+                var color_array = hex.match(/.{1,2}/g); //split two characters at a time
                 red = color_array[0];
                 green = color_array[1];
                 blue = color_array[2];
