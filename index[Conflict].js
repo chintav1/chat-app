@@ -1,6 +1,6 @@
 var app = require('express')();
 var http = require('http').createServer(app);
-var io = require("socket.io")(http);
+var io = require("socket.io")(http, {pingTimout: 3600000000000000000000 });
 
 var online = new Array();
 var user = "User";
@@ -24,16 +24,12 @@ io.on("connection", function(socket) {
     var blue = 0;
 
     console.log("A user has connected: " + nickname);
-
     id+=1;
     online.push(nickname);
     io.emit("users", online);
+    socket.emit("chat log", messages);   
 
-    if (messages.length > 0) {
-        console.log("SENDING MESSAGES TO CLIENT");
-        socket.emit("chat log", messages);
-        console.log("SENT MESSAGES TO CLIENT. WAITING FOR RESPONSE FROM CLIENT....");
-    }
+
     socket.on("disconnect", function() {
         console.log("A user has disconnected");
         var index = online.indexOf(nickname);
@@ -79,7 +75,6 @@ io.on("connection", function(socket) {
         msg_detail.color = color;
         messages.push(msg_detail);
         console.log(messages);
-        
         io.emit('chat message',  msg_detail);
 
     })

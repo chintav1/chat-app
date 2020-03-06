@@ -63,26 +63,8 @@
                     return false;
                 })
 
-                socket.on("chat log", function(log) {
-                    for (let i = 0; i < log.length; i++) {
-                        var entry = log[i];
-                        var details = Object.values(entry);
-                        var date = details[0];
-                        var nickname = details[1];
-                        var msg = details[2];
-                        var id = details[3];
-                        var color = details[4];
-                        
-                        if (msg.startsWith('/')) {
-                            continue;
-                        }
-                        else {
-                            var output = "<li class='list-group-item' id='" + id + "'>" + date + "\xa0\xa0" + 
-                            "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>"
-                            $("#messages").append(output);
-                        }
-                        $("#messages li#" + id + " span").css({'color': color});
-                    }
+                socket.on("chat log", function(history) {
+                    
                 })
 
                 socket.on("users", function(online) {
