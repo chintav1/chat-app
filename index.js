@@ -11,8 +11,6 @@ app.get('/', function(req, res) {
     console.log("Sending file..");
     res.sendFile(__dirname + '/index.html');
     console.log("Sent file!");
-
-
 });
 
 io.on("connection", function(socket) {
@@ -30,9 +28,7 @@ io.on("connection", function(socket) {
     io.emit("users", online);
 
     if (messages.length > 0) {
-        console.log("SENDING MESSAGES TO CLIENT");
         socket.emit("chat log", messages);
-        console.log("SENT MESSAGES TO CLIENT. WAITING FOR RESPONSE FROM CLIENT....");
     }
     socket.on("disconnect", function() {
         console.log("A user has disconnected");
