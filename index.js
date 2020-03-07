@@ -4,7 +4,7 @@ var io = require("socket.io")(http);
 
 var online = new Array();
 var user = "User";
-var id = 1;
+var number = 1;
 var messages = new Array();
 
 app.get('/', function(req, res) {
@@ -14,7 +14,7 @@ app.get('/', function(req, res) {
 });
 
 io.on("connection", function(socket) {
-    var nickname = user + id;
+    var nickname = user + number;
     var color = '';
     var hex;
     var red = 0;
@@ -22,9 +22,8 @@ io.on("connection", function(socket) {
     var blue = 0;
 
     console.log("A user has connected: " + nickname);
-
-    id+=1;
     online.push(nickname);
+    number+=1;
     io.emit("users", online);
 
     if (messages.length > 0) {

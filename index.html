@@ -12,13 +12,13 @@
                 padding: 3px; 
                 position: fixed; 
                 bottom: 0; 
-                width: 83%; 
+                width: 97%; 
             }
 
             form input { 
                 border: 100; 
                 padding: 10px; 
-                width: 86%; 
+                width: 83%; 
                 margin-right: .5%;
                 margin-left: .5%;
             }
@@ -29,13 +29,17 @@
                 vertical-align: bottom;  
             }
 
+            #message_list {
+                position: absolute;
+                bottom:54px;
+            }
 
 
             div.jumbotron {
                 padding-bottom: 0%;
                 padding-top: 0%;
                 padding-right: 0%;
-                height: 90vh;
+                height: 100vh;
             }
 
             #online {
@@ -43,7 +47,9 @@
                 color: blue;
             }
 
-
+            #messages li {
+                width: 100%
+            }
             #messages li:nth-child(odd) { 
                 background: #eee; 
             }
@@ -140,20 +146,18 @@
                 })
 
             })
-            
         </script>
 
+        <div id="message_list" class="col-md-10" style='max-height:100vh; overflow-y: scroll; padding-left: 0; padding-right: 0;'>
+            <ul class='list-group' id="messages"></ul>
+        </div>
         <div class="row">
-            <div id="main_div" class="col-md-10">
-                <div id="message_list" style='max-height: 90vh; overflow-y: scroll;'>
-                    <ul class='list-group' id="messages"></ul>
-                </div>
+            <div id="input_form" class="col-md-10">
                 <form action="">
                     <input id="msg" autocomplete="off"/>
-                    <button type="button" class="btn btn-primary" onclick="">Send</button>
+                    <!-- <button type="button" class="btn btn-primary" onclick="">Send</button> -->
                 </form> 
             </div>
-
             <div class="col-md-2">
                 <div class="jumbotron">
                     <nav id="sidebar">
@@ -164,6 +168,8 @@
                     </nav>     
                 </div> 
             </div>
+
         </div>
+
     </body>
 </html>
