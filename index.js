@@ -14,15 +14,18 @@ app.get('/', function(req, res) {
 });
 
 io.on("connection", function(socket) {
+    var user_info = new Object();
+    var user_id = socket.id;
     var nickname = user + number;
     var color = '';
     var hex;
     var red = 0;
     var green = 0;
     var blue = 0;
-
     console.log("A user has connected: " + nickname);
-    online.push(nickname);
+    user_info.nick = nickname;
+    user_info.id = user_id;
+    online.push(user_info);
     number+=1;
     io.emit("users", online);
 
@@ -38,16 +41,31 @@ io.on("connection", function(socket) {
     socket.on("chat message", function(msg) {
         var msg_detail = new Object();
         var now = new Date(Date.now());
-        var id = socket.id;
+        var msg_id = socket.id;
         msg_detail.date = now.toLocaleString();
         if (msg.startsWith('/')) {
             var cmd = msg.split(' ')[0];
             if(cmd === '/nick') {
                 var new_nickname = msg.split(" ")[1];
-                if (!online.includes(new_nickname)) {
-                    var index = online.indexOf(nickname);
-                    nickname = new_nickname;
-                    online[index] = nickname;   
+                var taken = false;
+                var id = socket.id;
+                for (let i = 0; i < online.length; i++) {
+                    var current = online[i];
+                    var user_details = Object.values(current);
+                    var user_nickname = user_details[0];
+                    if (user_nickname === new_nickname) {
+                        taken = true;
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                if (taken === false) {
+                    var index = online.findIndex(element => element.id === id);
+                    var user_details = online[index];
+                    nickname = new_nickname
+                    user_details.nick = nickname;
+                    online.splice(index, 1, user_details);
                     io.emit("users", online);
                 }
                 else {
@@ -69,7 +87,7 @@ io.on("connection", function(socket) {
 
         msg_detail.nick = nickname;
         msg_detail.message = msg;
-        msg_detail.id = id;
+        msg_detail.id = msg_id;
         msg_detail.color = color;
         messages.push(msg_detail);
         console.log(messages);
