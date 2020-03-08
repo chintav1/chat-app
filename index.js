@@ -32,12 +32,10 @@ io.on("connection", function(socket) {
     socket.on("disconnect", function() {
         console.log("A user has disconnected");
         var index = online.indexOf(nickname);
-        var removed = online.splice(index, 1);
+        online.splice(index, 1);
         io.emit("users", online);
     })
     socket.on("chat message", function(msg) {
-        console.log("message: " + msg);
-        
         var msg_detail = new Object();
         var now = new Date(Date.now());
         var id = socket.id;

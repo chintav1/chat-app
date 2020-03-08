@@ -8,6 +8,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
+            html {
+                background-image:url("https://cache.desktopnexus.com/cropped-wallpapers/1157/1157920-1440x900-[DesktopNexus.com].jpg?st=dGD4SRYeB6ikc_PPry5hvg&e=1583643458");
+            }
             form { 
                 padding: 3px; 
                 position: fixed; 
@@ -21,12 +24,13 @@
                 width: 83%; 
                 margin-right: .5%;
                 margin-left: .5%;
-            }
+            } 
             #messages { 
                 list-style-type: none; 
-                margin: 0; 
+                margin: 0;
+                margin-top: 0; 
                 padding: 0;
-                vertical-align: bottom;  
+                vertical-align: bottom;
             }
 
             #message_list {
@@ -36,10 +40,14 @@
 
 
             div.jumbotron {
+                position: absolute;
+                right: 5px;
                 padding-bottom: 0%;
                 padding-top: 0%;
-                padding-right: 0%;
+                padding-right: 10px;
+                padding-left: 6px;
                 height: 100vh;
+                opacity: 0.85;
             }
 
             #online {
@@ -48,8 +56,9 @@
             }
 
             #messages li {
-                width: 100%
-            }
+                width:100%;
+                opacity: 0.85;
+            } 
             #messages li:nth-child(odd) { 
                 background: #eee; 
             }
@@ -148,18 +157,13 @@
             })
         </script>
 
-        <div id="message_list" class="col-md-10" style='max-height:100vh; overflow-y: scroll; padding-left: 0; padding-right: 0;'>
-            <ul class='list-group' id="messages"></ul>
-        </div>
         <div class="row">
-            <div id="input_form" class="col-md-10">
-                <form action="">
-                    <input id="msg" autocomplete="off"/>
-                    <!-- <button type="button" class="btn btn-primary" onclick="">Send</button> -->
-                </form> 
+            <div id="message_list" class="col-md-10" style='max-height:100vh; overflow-y: scroll; padding-left: 0; padding-right: 0;'>
+                <ul id="messages"></ul>
             </div>
+            <div class="col-md-10"></div>
             <div class="col-md-2">
-                <div class="jumbotron">
+                <div class="jumbotron jumbotron-fluid">
                     <nav id="sidebar">
                         <div class="sidebar-header">
                             <h3>Online Users</h3>
@@ -168,8 +172,14 @@
                     </nav>     
                 </div> 
             </div>
-
         </div>
-
+        <div class="row">
+            <div id="input_form" class="col-md-12">
+                <form action="">
+                    <input type="text" id="msg" autocomplete="off"/>
+                    <button type="button" class="btn btn-primary">Send</button>
+                </form> 
+            </div>
+        </div>
     </body>
 </html>
