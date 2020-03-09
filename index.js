@@ -29,13 +29,14 @@ io.on("connection", function(socket) {
     number+=1;
     io.emit("users", online);
 
+    //send out a log if available
     if (messages.length > 0) {
         socket.emit("chat log", messages);
     }
     socket.on("disconnect", function() {
         console.log("A user has disconnected");
         var index = online.indexOf(nickname);
-        online.splice(index, 1);
+        online.splice(index, 1);    //remove user from list of online users
         io.emit("users", online);
     })
     socket.on("chat message", function(msg) {
@@ -60,6 +61,7 @@ io.on("connection", function(socket) {
                         continue;
                     }
                 }
+                //Nickname availabe
                 if (taken === false) {
                     var index = online.findIndex(element => element.id === id);
                     var user_details = online[index];
@@ -68,12 +70,13 @@ io.on("connection", function(socket) {
                     online.splice(index, 1, user_details);
                     io.emit("users", online);
                 }
+                //nickname taken
                 else {
                     socket.emit("nick_error");
                 }
             }
             else if (cmd === '/nickcolor') {
-                hex = msg.split(' ')[1];
+                hex = msg.split(' ')[1];                //get requested color
                 color = '';                             //clear previous color
                 var color_array = hex.match(/.{1,2}/g); //split two characters at a time
                 red = color_array[0];

@@ -78,13 +78,15 @@
             
             $(function() {
                 var socket = io();
+
+                //FORM SUBMIT
                 $('form').submit(function (e) {
                     e.preventDefault();
                     socket.emit("chat message", $("#msg").val());
                     $("#msg").val(""); 
                     return false;
                 })
-
+                //CHAT HISTORY SECTION
                 socket.on("chat log", function(log) {
                     for (let i = 0; i < log.length; i++) {
                         var entry = log[i];
@@ -107,11 +109,12 @@
                     }
                 })
 
+                //SECTION FOR POPULATING CURRENT ONLINE USERS
                 socket.on("users", function(online) {
                     $("#online").empty();
                     for (let i = 0; i < online.length; i++) {
-                        var user = online[i];
-                        var user_info = Object.values(user);
+                        var user = online[i];                   //get object from array
+                        var user_info = Object.values(user);    //get values of the user
                         var nickname = user_info[0];
                         var id = user_info[1];
                         if (id === socket.id) {
@@ -123,6 +126,7 @@
                     }
                 })
                 
+                //NEW CHAT MESSAGE
                 socket.on("chat message", function (message) {
                     var msg_details = Object.values(message);
                     var date = msg_details[0];
@@ -131,6 +135,7 @@
                     var id = msg_details[3];
                     var color = msg_details[4];
 
+                    //deal with commands
                     if (msg.startsWith('/')) {
                         var cmd = msg.split(' ')[0];
                         if (cmd === '/nickcolor') {
@@ -143,7 +148,7 @@
                                 alert("Your nickname is: " + nickname);
                             }    
                         }
-                        else {
+                        else {                      //invalid command
                             if (socket.id == id) {
                                 alert("INFO:Messages starting with a \'/\' are reserved for special commands (nickname/color)" + 
                                 "\nERROR: This is an invalid command!")
@@ -157,15 +162,15 @@
                         "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>"
                         $("#messages").append(output);
                     }
-                    $("#message_list").scrollTop($("#messages").height());
+                    $("#message_list").scrollTop($("#messages").height()); //always scroll to bottom of list
                     $("#messages li#" + id + " span").css({'color': color});
                     if (socket.id === id) {
-                        $("#messages li#" + id).css({'font-weight': 'bold'})
+                        $("#messages li#" + id).css({'font-weight': 'bold'})    //bold user messages
                     }
                     
                     
                 })
-                socket.on("nick_error", function() {
+                socket.on("nick_error", function() {    //invalid nickname;
                     alert("Sorry, this nickname is already taken")
                 })
 
