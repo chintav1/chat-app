@@ -30,17 +30,19 @@
                 list-style-type: none; 
                 margin: 0;
                 margin-top: 0; 
-                padding: 0;
+                padding: 15px;
                 vertical-align: bottom;
             }
 
             #message_list {
-                position: absolute;
-                bottom:54px;
+                position: fixed;
+                bottom: 10%;
+                top:2%;
             }
 
 
             div.jumbotron {
+                display: flex;
                 position: absolute;
                 right: 5px;
                 padding-bottom: 0%;
@@ -49,6 +51,7 @@
                 padding-left: 6px;
                 height: 100vh;
                 opacity: 0.85;
+                align-items: stretch;
             }
 
             #online {
@@ -154,12 +157,12 @@
                         "<span>" + nickname + "</span>"+ ":\xa0" + msg + "</li>"
                         $("#messages").append(output);
                     }
-
+                    $("#message_list").scrollTop($("#messages").height());
                     $("#messages li#" + id + " span").css({'color': color});
                     if (socket.id === id) {
                         $("#messages li#" + id).css({'font-weight': 'bold'})
                     }
-                    $("#message_list").scrollTop($("#message_list").height());
+                    
                     
                 })
                 socket.on("nick_error", function() {
@@ -168,29 +171,30 @@
 
             })
         </script>
-
-        <div class="row">
-            <div id="message_list" class="col-md-10" style='max-height:100vh; overflow-y: scroll; padding-left: 0; padding-right: 0;'>
-                <ul id="messages"></ul>
-            </div>
-            <div class="col-md-10"></div>
-            <div class="col-md-2">
-                <div class="jumbotron jumbotron-fluid">
-                    <nav id="sidebar">
-                        <div class="sidebar-header">
-                            <h3>Online Users</h3>
-                        </div>
-                        <ul id="online"></ul> 
-                    </nav>     
-                </div> 
+        <div class="col-md-12" style="top: 10; right: 0;">
+            <div class="jumbotron" style="right: 0;">
+                <nav id="sidebar">
+                    <div class="sidebar-header">
+                        <h3>Online Users</h3>
+                    </div>
+                    <ul id="online"></ul> 
+                </nav>     
             </div>
         </div>
-        <div class="row">
-            <div id="input_form" class="col-md-12">
-                <form action="">
-                    <input type="text" id="msg" autocomplete="off"/>
-                    <button type="button" class="btn btn-primary">Send</button>
-                </form> 
+        <div class="container-fluid">
+            <div class="row-flex">
+                <div id="message_list" class="col-md-10" style='max-height:100vh; overflow-y: scroll; padding-left: 0; padding-right: 0;'>
+                    <ul id="messages"></ul>
+                </div>
+                <div class="col-md"></div>
+
+            </div>
+            <div class="row-flex">
+                <div id="input_form" class="row-flex">
+                    <form action="">
+                        <input type="text" id="msg" autocomplete="off"/>
+                    </form> 
+                </div>
             </div>
         </div>
     </body>
